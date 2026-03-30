@@ -1,7 +1,7 @@
-﻿namespace TaskManager.Application.DTOs;
+﻿namespace TaskManager.Application.DTOs.Responses;
 
 // SRP: one job — carry project data outside
-public record ProjectDto(
+public record ProjectResponse(
     Guid Id,
     string Name,
     string Description,

@@ -1,8 +1,8 @@
-﻿namespace TaskManager.Application.DTOs;
+﻿namespace TaskManager.Application.DTOs.Responses;
 
 // SRP: one job — carry task data to the outside world
 // Clean Architecture: outer layers see DTOs, not Entities
-public record TaskItemDto(
+public record TaskItemResponse(
     Guid Id,
     string Title,
     string Description,
