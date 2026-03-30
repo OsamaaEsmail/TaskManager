@@ -1,5 +1,7 @@
-﻿using TaskManager.Application.DTOs.Requests;
+﻿using System.Diagnostics.Metrics;
+using TaskManager.Application.DTOs.Requests;
 using TaskManager.Application.Interfaces;
+using TaskManager.Domain.Entities;
 using TaskManager.Infrastructure.Persistence;
 using TaskManager.Infrastructure.Services;
 
@@ -74,3 +76,39 @@ catch (InvalidOperationException ex)
 {
     Console.WriteLine($"\n  Error: {ex.Message}");
 }
+
+
+// ============================================================
+// 4. Delete Tasks and Projects
+// ============================================================
+Console.WriteLine("\n=== Delete ===\n");
+
+Console.WriteLine($"  Before delete: Web App tasks = {projectService.GetById(webApp.Id)!.TotalTasks}");
+
+taskService.Delete(task2.Id);
+Console.WriteLine($"  After deleting '{task2.Title}': Web App tasks = {projectService.GetById(webApp.Id)!.TotalTasks}");
+
+projectService.Delete(mobileApp.Id);
+Console.WriteLine($"\n  After deleting Mobile App: total projects = {projectService.GetAll().Count}");
+
+// try to delete again — should throw
+try
+{
+    projectService.Delete(mobileApp.Id);
+}
+catch (InvalidOperationException ex)
+{
+    Console.WriteLine($"  Error: {ex.Message}");
+}
+
+// ============================================================
+// 5. DIP Proof: Console only knows interfaces
+// ============================================================
+Console.WriteLine("\n=== DIP Proof ===\n");
+
+Console.WriteLine($"  projectService type: {projectService.GetType().Name}");
+Console.WriteLine($"  taskService type: {taskService.GetType().Name}");
+Console.WriteLine($"  But Console only sees: IProjectService, ITaskService");
+Console.WriteLine($"  If we swap Infrastructure with a real DB — Console code stays the same!");
+
+Console.WriteLine("\n=== Done! ===");
