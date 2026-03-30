@@ -24,3 +24,21 @@ Console.WriteLine($"  Created: {webApp.Name} (Id: {webApp.Id})");
 Console.WriteLine($"  Created: {mobileApp.Name} (Id: {mobileApp.Id})");
 
 Console.WriteLine($"\n  All projects: {projectService.GetAll().Count}");
+
+// ============================================================
+// 2. Create Tasks inside Projects
+// ============================================================
+Console.WriteLine("\n=== Create Tasks ===\n");
+
+var task1 = taskService.Create(new CreateTaskRequest("Setup database", "Install SQL Server", webApp.Id));
+var task2 = taskService.Create(new CreateTaskRequest("Design homepage", "Create UI mockup", webApp.Id));
+var task3 = taskService.Create(new CreateTaskRequest("Setup Flutter", "Initialize Flutter project", mobileApp.Id));
+
+Console.WriteLine($"  Created: {task1.Title} → Web App");
+Console.WriteLine($"  Created: {task2.Title} → Web App");
+Console.WriteLine($"  Created: {task3.Title} → Mobile App");
+
+// check project now shows task count
+var webAppUpdated = projectService.GetById(webApp.Id);
+Console.WriteLine($"\n  Web App tasks: {webAppUpdated!.TotalTasks}");
+Console.WriteLine($"  Mobile App tasks: {projectService.GetById(mobileApp.Id)!.TotalTasks}");
