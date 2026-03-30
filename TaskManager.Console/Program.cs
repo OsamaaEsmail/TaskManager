@@ -42,3 +42,35 @@ Console.WriteLine($"  Created: {task3.Title} → Mobile App");
 var webAppUpdated = projectService.GetById(webApp.Id);
 Console.WriteLine($"\n  Web App tasks: {webAppUpdated!.TotalTasks}");
 Console.WriteLine($"  Mobile App tasks: {projectService.GetById(mobileApp.Id)!.TotalTasks}");
+
+
+// ============================================================
+// 3. Complete and Reopen Tasks
+// ============================================================
+Console.WriteLine("\n=== Complete & Reopen Tasks ===\n");
+
+// complete task1
+taskService.Complete(task1.Id);
+var completedTask = taskService.GetById(task1.Id);
+Console.WriteLine($"  {completedTask!.Title}: IsCompleted = {completedTask.IsCompleted}");
+Console.WriteLine($"  CompletedAt: {completedTask.CompletedAt}");
+
+// check project progress
+var webAppProgress = projectService.GetById(webApp.Id);
+Console.WriteLine($"\n  Web App: {webAppProgress!.CompletedTasks}/{webAppProgress.TotalTasks} completed");
+
+// reopen task1
+taskService.Reopen(task1.Id);
+var reopenedTask = taskService.GetById(task1.Id);
+Console.WriteLine($"\n  After Reopen: {reopenedTask!.Title}: IsCompleted = {reopenedTask.IsCompleted}");
+
+// try to complete already completed — should throw
+taskService.Complete(task1.Id);
+try
+{
+    taskService.Complete(task1.Id);
+}
+catch (InvalidOperationException ex)
+{
+    Console.WriteLine($"\n  Error: {ex.Message}");
+}
